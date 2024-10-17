@@ -1,26 +1,25 @@
-import game.HangmanGame;
-import game.HangmanGameAutoGuesser;
-import game.HangmanGameCheatingComputer;
+import game.*;
 import util.HangmanDictionary;
 
+public class HangmanMain {
+    public static void main(String[] args) {
+        HangmanDictionary dictionary = new HangmanDictionary("lowerwords.txt");
 
-/**
- * This class launches the Hangman game and plays once.
- * 
- * @author Michael Hewner
- * @author Mac Mason
- * @author Robert C. Duvall
- * @author Shannon Duvall
- */
-public class Main {
-    public static final String DICTIONARY = "data/lowerwords.txt";
-    public static final int NUM_LETTERS = 6;
-    public static final int NUM_MISSES = 8;
+        AbstractGuesser normalGuesser = new NormalGuesser();
+        AbstractGuesser autoGuesser = new AutoGuesser();
+        AbstractExecutioner normalExecutioner = new NormalExecutioner(dictionary, 5);
+        AbstractExecutioner cheatingExecutioner = new CheatingExecutioner(dictionary, 5);
 
+        HangmanGame game1 = new HangmanGame(normalGuesser, normalExecutioner, dictionary, 5, 6);
+        game1.play();
 
-    public static void main (String[] args) {
-        //new HangmanGameInteractiveGuesser(new HangmanDictionary(DICTIONARY), NUM_LETTERS, NUM_MISSES).play();
-        //new HangmanGameAutoGuesser(new HangmanDictionary(DICTIONARY), NUM_LETTERS, NUM_MISSES).play();
-    	new HangmanGameCheatingComputer(new HangmanDictionary(DICTIONARY), NUM_LETTERS, NUM_MISSES).play();
+        HangmanGame game2 = new HangmanGame(autoGuesser, normalExecutioner, dictionary, 5, 6);
+        game2.play();
+
+        HangmanGame game3 = new HangmanGame(normalGuesser, cheatingExecutioner, dictionary, 5, 6);
+        game3.play();
+
+        HangmanGame game4 = new HangmanGame(autoGuesser, cheatingExecutioner, dictionary, 5, 6);
+        game4.play();
     }
 }
